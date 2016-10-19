@@ -8,6 +8,7 @@ class FollowToggle {
   }
 
   render() {
+    this.$el.prop("disabled", false);
     if (this.followState === true){
       this.$el.html("Unfollow!");
     } else {
@@ -22,11 +23,10 @@ class FollowToggle {
         method: this.followState ? "DELETE" : "POST",
         url: `/users/${this.userId}/follow`,
         dataType: "json",
-        success: function(followData){
-          console.log("success");
+        success: followData => {
           this.toggleState();
           this.render();
-        }.bind(this)
+        }
       });
       this.waiting();
     });
@@ -41,15 +41,13 @@ class FollowToggle {
   }
 
   waiting() {
+    this.$el.prop("disabled", true);
     if (this.followState === true) {
       this.$el.html("unfollowing");
     } else {
       this.$el.html("following");
     }
   }
-
-
-
 }
 
 module.exports = FollowToggle;
